@@ -1,19 +1,26 @@
-
 from PIL import Image
 from reportlab.pdfgen import canvas
 import argparse
 import math
 import os
 
-paper_sizes = {'letter': (2550, 3300), 'a4': (2480, 3508), 'legal': (2550, 4200)}
+paper_sizes = {"letter": (2550, 3300), "a4": (2480, 3508), "legal": (2550, 4200)}
 
 
-def scale_and_create_pdfs_single_v5(image_path, max_papers=10, pdf_path='output.pdf', paper_size='letter'):
+def scale_and_create_pdfs_single_v6(
+    image_path,
+    max_papers=10,
+    pdf_path="output.pdf",
+    paper_size="letter",
+    orientation="portrait",
+):
     paper_width, paper_height = paper_sizes.get(paper_size, (2550, 3300))
+    if orientation == "landscape":
+        paper_width, paper_height = paper_height, paper_width
     img = Image.open(image_path)
     img_width, img_height = img.size
-    if img.mode == 'RGBA':
-        img = img.convert('RGB')
+    if img.mode == "RGBA":
+        img = img.convert("RGB")
     aspect_ratio = img_width / img_height
     num_segments_x = int(math.sqrt(max_papers * aspect_ratio))
     num_segments_y = int(math.sqrt(max_papers / aspect_ratio))
@@ -45,11 +52,39 @@ def scale_and_create_pdfs_single_v5(image_path, max_papers=10, pdf_path='output.
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Convert an image into multiple PDF segments.")
+    parser = argparse.ArgumentParser(
+        description="Convert an image into multiple PDF segments."
+    )
     parser.add_argument("image_path", help="Path to the input image")
-    parser.add_argument("--max_papers", type=int, default=10, help="Maximum number of papers to use (default is 10)")
-    parser.add_argument("--pdf_path", default='output.pdf', help="Path to save the output PDF (default is 'output.pdf')")
-    parser.add_argument("--paper_size", choices=['letter', 'a4', 'legal'], default='letter', help="Paper size (default is 'letter')")
-    
+    parser.add_argument(
+        "--max_papers",
+        type=int,
+        default=10,
+        help="Maximum number of papers to use (default is 10)",
+    )
+    parser.add_argument(
+        "--pdf_path",
+        default="output.pdf",
+        help="Path to save the output PDF (default is 'output.pdf')",
+    )
+    parser.add_argument(
+        "--paper_size",
+        choices=["letter", "a4", "legal"],
+        default="letter",
+        help="Paper size (default is 'letter')",
+    )
+    parser.add_argument(
+        "--orientation",
+        choices=["portrait", "landscape"],
+        default="portrait",
+        help="Paper orientation (default is 'portrait')",
+    )
+
     args = parser.parse_args()
-    scale_and_create_pdfs_single_v5(args.image_path, args.max_papers, args.pdf_path, args.paper_size)
+    scale_and_create_pdfs_single_v6(
+        args.image_path,
+        args.max_papers,
+        args.pdf_path,
+        args.paper_size,
+        args.orientation,
+    )

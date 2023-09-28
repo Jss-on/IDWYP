@@ -1,5 +1,5 @@
 
-# IDWYP - I Dont Want Your Paper
+# IDWYP
 
 ## Description
 This Python script takes an image and splits it into segments, each fitting on a specified paper size. The segments are then compiled into a single PDF file.
@@ -15,20 +15,25 @@ This Python script takes an image and splits it into segments, each fitting on a
 ## Usage
 Run the script using the following command:
 ```bash
-python main.py <image_path> [--max_papers <max_papers>] [--pdf_path <pdf_path>] [--paper_size <paper_size>]
+python main.py <image_path> [--max_papers <max_papers>] [--pdf_path <pdf_path>] [--paper_size <paper_size>] [--orientation <orientation>]
 ```
 
 - `image_path`: Path to the input image (required).
 - `max_papers`: Maximum number of papers to use (optional, default is 10).
 - `pdf_path`: Path to save the output PDF (optional, default is 'output.pdf').
 - `paper_size`: Paper size to use ('letter', 'a4', or 'legal') (optional, default is 'letter').
+- `orientation`: Orientation to use ('portrait', 'landscape') (optional, default is 'portrait').
 
 ## Example
 ```bash
-python main.py "./static/sample_image.png" --max_papers 9 --pdf_path "output.pdf" --paper_size "a4"
+python main.py "./static/sample_image.png" --max_papers 9 --pdf_path "output.pdf" --paper_size "a4" --orientation "portrait"
 ```
 
 ### Available Paper Sizes
 - 'letter': 8.5 x 11 inches
 - 'a4': 210 x 297 mm
 - 'legal': 8.5 x 14 inches
+
+### Available Orientations
+- 'portrait': Vertical orientation (default)
+- 'landscape': Horizontal orientation
